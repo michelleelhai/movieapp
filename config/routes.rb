@@ -7,5 +7,8 @@ Rails.application.routes.draw do
     get "/actor" => "actors#actor"
     get "/movie" => "movies#movie"
     get "/movies" => "movies#movies"
+    get "/singleactor"=> "actors#singleactor"
+    get "/actorone/:id" => "actors#singleactor"
+    post "anactor"=> "actors#singleactor"
   end
 end
