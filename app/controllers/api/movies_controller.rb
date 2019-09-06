@@ -9,7 +9,14 @@ def show
   end
   def create
     @movie = Movie.create({title: params[:title], year: params[:year], plot: params[:plot], director: params[:director], english: params[:english]})
-    render 'create.json.jb'
+      @movie.save
+    if @movie.save
+      render 'create.json.jb'
+    else
+      render json: {errors: @movie.errors.full_messages},
+      status: :unprocessable_entity
+    end
+
   end
   def update
    @movie = Movie.find_by(id: params[:id])
@@ -19,7 +26,12 @@ def show
     @movie.director = params[:director] || @movie.director
     @movie.english = params[:director] || @movie.english
     @movie.save
-    render 'update.json.jb'
+    if @movie.save
+      render 'update.json.jb'
+    else 
+      render json: {errors: @movie.errors.full_messages},
+      status: :unprocessable_entity
+    end
   end
   def destroy
     @movie = Movie.find_by(id: params[:id])

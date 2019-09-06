@@ -9,7 +9,13 @@ class Api::ActorsController < ApplicationController
   end
   def create
     @actor = Actor.create({first_name: params[:first_name], last_name: params[:last_name], known_for: params[:known_for], gender: params[:gender], age:params[:age]})
-    render 'create.json.jb'
+    @actor.save
+    if @actor.save
+      render 'create.json.jb'
+    else
+      render json: {errors: @actor.errors.full_messages},
+      status: :unprocessable_entity
+    end
   end
   def update
    @actor = Actor.find_by(id: params[:id])
@@ -19,7 +25,12 @@ class Api::ActorsController < ApplicationController
     @actor.gender = params[:gender] || @actor.gender
     @actor.age = params[:age] || @actor.age
     @actor.save
-    render 'update.json.jb'
+    if @actor.save
+      render 'update.json.jb'
+    else
+      render json: {errors: @actor.errors.full_messages},
+      status: :unprocessable_entity
+    end
   end
   def destroy
     @actor = Actor.find_by(id: params[:id])
