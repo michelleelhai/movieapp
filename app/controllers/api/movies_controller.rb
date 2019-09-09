@@ -5,6 +5,7 @@ def show
   end
   def index
     @movies = Movie.all
+    @movies = @movies.where(english: true)
     render 'index.json.jb'
   end
   def create
